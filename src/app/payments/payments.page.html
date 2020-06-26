@@ -1,13 +1,26 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title><h1>Payments</h1></ion-title>
+  <ion-toolbar color="primary"> 
+    <ion-row>  
+      <ion-col>        
+          <ion-back-button defaultHref="tabs/tab1"></ion-back-button>        
+  </ion-col> 
+    <ion-col size="10">
+    <ion-text>      
+      <h2>Payments</h2>
+    </ion-text>
+  </ion-col> 
+  </ion-row>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-card>
     <ion-card-header>
-      <ion-card-title><h1>Billing and Order details</h1></ion-card-title>       
+      <ion-card-title>
+        <ion-text>
+        <h3>Billing and Order details</h3>
+        </ion-text>
+        </ion-card-title>       
     </ion-card-header>
     <ion-card-content>
       <ion-item>
@@ -36,7 +49,9 @@
         <ion-input placeholder="Eg Nyabugogo kwamutangana"></ion-input>    
       </ion-item>
       <ion-item>
-       <h1>Your order</h1>   
+        <ion-text>
+          <span style="font-size: 15pt;"><b>Your order</b></span>
+        </ion-text>         
       </ion-item>
       <ion-grid class="ion-grid">
         <ion-row class="ion-align-items-center cell-class">
@@ -44,17 +59,9 @@
             <ion-item><b>Product</b></ion-item>
           </ion-col>
           <ion-col>
-            <ion-item><b>Sub total</b></ion-item>
+            <ion-item><b>Amount</b></ion-item>
           </ion-col>          
-        </ion-row>
-        <ion-row class="ion-align-items-center cell-class">
-          <ion-col  size="7">
-            <ion-item>Product</ion-item>
-          </ion-col>
-          <ion-col>
-            <ion-item>Amount</ion-item>
-          </ion-col>          
-        </ion-row>
+        </ion-row>        
         <ion-row class="ion-align-items-center cell-class">
           <ion-col  size="7">
             <ion-item>1.8L COLESS KETTLELD  × 1</ion-item>
