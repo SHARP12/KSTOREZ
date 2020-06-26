@@ -1,12 +1,19 @@
-import { CartService, Product } from '../services/cart.service'
+//import { Component, OnInit } from '@angular/core';
+import { Product, CartService } from './../../services/cart.service';
 import { Component, OnInit } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
+//import { Injectable } from '@angular/core';
+
+//@Injectable({
+//  providedIn: 'root'
+//})
 @Component({
-  selector: 'app-tab2',
-  templateUrl: 'tab2.page.html',
-  styleUrls: ['tab2.page.scss']
+  selector: 'app-cart-modal',
+  templateUrl: './cart-modal.page.html',
+  styleUrls: ['./cart-modal.page.scss'],
 })
-export class Tab2Page {
+export class CartModalPage implements OnInit {
+
   cart: Product[] = [];
  
   constructor(private cartService: CartService, private modalCtrl: ModalController, private alertCtrl: AlertController) { }
@@ -47,4 +54,5 @@ export class Tab2Page {
       this.modalCtrl.dismiss();
     });
   }
+
 }
