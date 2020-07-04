@@ -2,25 +2,26 @@ function myTest() {
     alert('Welcome to custom js');
 }
 
-function makePayment() {
+function makePayment(amt,cust_email,cust_phone,cust_name) {
     FlutterwaveCheckout({
       public_key: "FLWPUBK-e5f72bf99d21fbc69dbae898be07be54-X",
       tx_ref: "hooli-tx-1920bbtyt",
-      amount: 600,
+      amount: amt,
       currency: "RWF",
       payment_options: "mobile_money_rwanda",
+      redirect_url:"http://127.0.0.1:8100/payments",
       customer: {
-        email: "user@gmail.com",
-        phonenumber: "0784485654",
-        name: "Niyonsaba Alex",
+        email: cust_email,
+        phonenumber: cust_phone,
+        name: cust_name,
       },
       callback: function (data) { // specified callback function
         console.log(data);
       },
       customizations: {
-        title: "My store",
+        title: "KSTOREZ",
         description: "Payment for items in cart",
-        logo: "https://assets.piedpiper.com/logo.png",
+        logo: "https://assets.piedpiper.com/logo.pnghttps://cdn.shortpixel.ai/client/q_lossy,ret_img/https://www.kstorez.com/wp-content/uploads/2020/06/cropped-BLUE-2-e1593414093176.png",
       },
     });
   }
