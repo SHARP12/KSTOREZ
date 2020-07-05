@@ -4,6 +4,8 @@ import { ModalController } from '@ionic/angular';
 import { CartModalPage } from '../pages/cart-modal/cart-modal.page';
 import { BehaviorSubject } from 'rxjs';
 import { CartService } from '../services/cart.service';
+import { Observable } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-tab1',
@@ -11,16 +13,19 @@ import { CartService } from '../services/cart.service';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
+  items: Observable<any[]>;
   cart = [];
   products = [];
   cartItemCount: BehaviorSubject<number>;
  
   @ViewChild('cart', {static: false, read: ElementRef})fab: ElementRef;
  
-  constructor(private cartService: CartService, private modalCtrl: ModalController) {}
+  constructor(private cartService: CartService, private modalCtrl: ModalController,firestore: AngularFirestore) {
+    this.items = firestore.collection('Products').valueChanges();
+  }
  
   ngOnInit() {
-    this.products = this.cartService.getProducts();
+    //this.products = this.cartService.getProducts();
     this.cart = this.cartService.getCart();
     this.cartItemCount = this.cartService.getCartItemCount();
   }

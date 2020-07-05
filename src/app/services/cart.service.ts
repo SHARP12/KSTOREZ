@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+
  
 export interface Product {
   id: number;
   name: string;
   price: number;
   amount: number;
-  imgUrl: string;
+
 }
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
+  //this code is to be replaced with actual firebase values
   data: Product[] = [
-    { id: 0, name: 'Shoes', price: 20000, amount: 0 ,imgUrl:'https://scene7.zumiez.com/is/image/zumiez/pdp_hero/Champion-Men-s-Rally-Pro-Black-%26-White-Shoes-_298256.jpg'},
-    { id: 1, name: 'Mattress', price: 50000, amount: 0,imgUrl:'https://www.woodenstreet.com/image/cache/data/mattress/updated/ortho-memory-mattress/updated/king/8-inch/1st-680x400.jpg' },
-    { id: 2, name: 'Jean', price: 5000, amount: 0,imgUrl:'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTlc6x-4Zg_0_OH_CjbpRpSEnbItRGVibV0ow&usqp=CAU' },    
+    { id:0, name: 'Shoes', price: 20000, amount: 0 }    
   ];
  
   private cart = [];
