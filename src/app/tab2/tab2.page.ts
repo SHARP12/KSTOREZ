@@ -28,7 +28,7 @@ export class Tab2Page {
   }
  
   getTotal() {
-    return this.cart.reduce((i, j) => i + j.price * j.amount, 0);
+    return this.cart.reduce((i, j) => i + j.Price * j.Amount, 0);
   }
  
   close() {

@@ -21,11 +21,12 @@ export class Tab1Page {
   @ViewChild('cart', {static: false, read: ElementRef})fab: ElementRef;
  
   constructor(private cartService: CartService, private modalCtrl: ModalController,firestore: AngularFirestore) {
-    this.items = firestore.collection('Products').valueChanges();
+    //this.items = firestore.collection('Products').valueChanges();
   }
  
   ngOnInit() {
-    //this.products = this.cartService.getProducts();
+    this.items = this.cartService.retrieve_products();
+  
     this.cart = this.cartService.getCart();
     this.cartItemCount = this.cartService.getCartItemCount();
   }
