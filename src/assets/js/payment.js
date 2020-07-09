@@ -9,7 +9,7 @@ function makePayment(amt,cust_email,cust_phone,cust_name) {
       amount: amt,
       currency: "RWF",
       payment_options: "mobile_money_rwanda",
-      redirect_url:"http://127.0.0.1:8100/payments",
+      redirect_url:"http://127.0.0.1:8100/payments/payment-confirm",
       customer: {
         email: cust_email,
         phonenumber: cust_phone,
