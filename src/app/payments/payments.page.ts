@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm ,FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { DatePipe } from '@angular/common';
+import { LoadingController } from '@ionic/angular';
 
 //import * from  './assets/js/smtp.js';
 declare let Email : any;
@@ -13,9 +14,7 @@ declare var makePayment: any;
   styleUrls: ['./payments.page.scss'],
 })
 
-export class PaymentsPage implements OnInit { 
-  
-  foo:string;
+export class PaymentsPage implements OnInit {   
   //from the form
   amount:number=100;
   name :string; 
@@ -24,12 +23,13 @@ export class PaymentsPage implements OnInit {
   email:string;
   ship_address:string;
   pay_method :string;
+
+  //instance of the loading conctroller
+  public loadingController: LoadingController
   
   //getting today's date
   pipe = new DatePipe('en-RW');
   today:string = new Date().toDateString();
-  //mySimpleFormat = this.pipe.transform(this.now, 'dd/MM/YYYY');
-  //today = this.pipe.transform(this.now, 'short');
     //for email
   body_mail_order:string;  
   
@@ -46,7 +46,7 @@ export class PaymentsPage implements OnInit {
         message: noti_message,
         buttons: ['OK']
       });  
-      await alert.present();
+       alert.present();
     }
     //general function for sending emails
     email_customer(receiver_email:string,subject:string, body:string){
@@ -63,7 +63,7 @@ export class PaymentsPage implements OnInit {
     //function for sending order email
     orderEmail(){                
       this.email_customer(this.email,'Your Order',this.body_mail_order);
-    }
+    }    
     //function that manages payment and orders
   pay() { 
     //the body of order email    
@@ -76,9 +76,12 @@ export class PaymentsPage implements OnInit {
    "<td>30,000 Frw <br><br></td></tr><tr><td><b>Shipping</b></td><td>Free Shipping <br><br></td>"+
    "</tr><tr><td><b>Total</b></td><td>30,000 Frw <br><br></td></tr><tr><td><b>Shipping Address</b></td>"+
    "<td>"+this.ship_address+" <br><br></td></tr></tbody><tfoot><tr><th colspan='2'>Thank you for shopping with"+
-   "<a href='https://kstorez.com'>Kstorez</a></th></tr></tfoot></table>";
+   "<a href='https://kstorez.com'>Kstorez</a></th></tr></tfoot></table>";   
+
    //checking the payment method chosen by the customer
     if(this.pay_method == "mobile Money / credit card"){
+      this.presentAlert("Order Received","Dear,"+ this.name, "We have received your order. we are now processing it.");
+      //proceeding with payment
       makePayment(this.amount,this.email,this.phone,this.name);
     } else{
       this.orderEmail();
@@ -86,19 +89,8 @@ export class PaymentsPage implements OnInit {
       this.presentAlert("Order Received","Dear,"+ this.name, "We have received your order. we are now processing it.");
     }    
   }
-  check_url(){
-    //const url = new URL('https://example.com?foo=1&bar=2');
-    const url= new URL(window.location.href);
-    const params = new URLSearchParams(url.search);
-    params.append('status','successful')
-    this.foo =params.get('status');
-
-    alert(this.foo);
-  }
-  sendSms(){    
-      
-    
-  }
   
-  
+  sendSms(){ 
+      }
+        
 }
