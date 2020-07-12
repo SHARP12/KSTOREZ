@@ -3,6 +3,11 @@ import { NgForm ,FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { DatePipe } from '@angular/common';
 import { LoadingController } from '@ionic/angular';
+import { Product,CartService } from '../services/cart.service';
+
+declare var window;
+
+//import { CartService, Product } from '../services/cart.service';
 
 //import * from  './assets/js/smtp.js';
 declare let Email : any;
@@ -14,29 +19,35 @@ declare var makePayment: any;
   styleUrls: ['./payments.page.scss'],
 })
 
-export class PaymentsPage implements OnInit {   
-  //from the form
-  amount:number=100;
+export class PaymentsPage implements OnInit {  
+  cart: Product[] = []; 
+  //from the form  
   name :string; 
   town :string;
   phone :string;
   email:string;
   ship_address:string;
   pay_method :string;
-
-  //instance of the loading conctroller
-  public loadingController: LoadingController
+   
+  //cart: Product[] = [];
+  constructor( private cartService: CartService,public alertController: AlertController) {
+   
+   }
+  ngOnInit() {  
+    this.cart = this.cartService.getCart(); 
+  }
   
+  total():number{
+    return window.home.getTotal();
+  }
+  //payment amoiunt
+  pay_amount:number=this.total();
+
   //getting today's date
   pipe = new DatePipe('en-RW');
   today:string = new Date().toDateString();
     //for email
-  body_mail_order:string;  
-  
-  constructor(public alertController: AlertController) { }
-    
-    ngOnInit() {    
-    }
+  body_mail_order:string;    
     //function for alert
     async presentAlert(noti_header:string,noti_subheader:string,noti_message:string){
       const alert = await this.alertController.create({
@@ -82,7 +93,7 @@ export class PaymentsPage implements OnInit {
     if(this.pay_method == "mobile Money / credit card"){
       this.presentAlert("Order Received","Dear,"+ this.name, "We have received your order. we are now processing it.");
       //proceeding with payment
-      makePayment(this.amount,this.email,this.phone,this.name);
+      makePayment(this.pay_amount,this.email,this.phone,this.name);
     } else{
       this.orderEmail();
       //sending an alert

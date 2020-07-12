@@ -56,51 +56,49 @@
       </ion-item>
       <ion-grid class="ion-grid">
         <ion-row class="ion-align-items-center cell-class">
-          <ion-col  size="7">
+          <ion-col  size="4">
             <ion-item><b>Product</b></ion-item>
           </ion-col>
-          <ion-col>
+          <ion-col size="4">
+            <ion-item><b>Qty</b></ion-item>
+          </ion-col>  
+          <ion-col size="4">
             <ion-item><b>Amount</b></ion-item>
-          </ion-col>          
+          </ion-col>        
         </ion-row>        
-        <ion-row class="ion-align-items-center cell-class">
-          <ion-col  size="7">
-            <ion-item>1.8L COLESS KETTLELD  × 1</ion-item>
+        <ion-row *ngFor="let p of cart" class="ion-align-items-center cell-class">
+          <ion-col  size="4">
+            <ion-item>{{p.ProductName }}</ion-item>
           </ion-col>
-          <ion-col>
-            <ion-item>18,000 Frw</ion-item>
-          </ion-col>          
-        </ion-row>
+          <ion-col size="4">
+            <ion-item>{{p.Amount}} </ion-item>
+          </ion-col>  
+          <ion-col size="4">
+            <ion-item>{{p.Amount* p.Price}} Frw</ion-item>
+          </ion-col>         
+        </ion-row>       
         <ion-row class="ion-align-items-center cell-class">
-          <ion-col  size="7">
-            <ion-item>23,500 BTU SPLIT AIR CONDITIONER WITH SILVER ION FILTER  × 1</ion-item>
-          </ion-col>
-          <ion-col>
-            <ion-item>700,000 Frw</ion-item>
-          </ion-col>          
-        </ion-row>
-        <ion-row class="ion-align-items-center cell-class">
-          <ion-col  size="7">
+          <ion-col  size="6">
             <ion-item>Subtotal</ion-item>
           </ion-col>
           <ion-col>
-            <ion-item>718,000 Frw</ion-item>
+            <ion-item> {{total()}} Frw</ion-item>
           </ion-col>          
         </ion-row>
         <ion-row class="ion-align-items-center cell-class">
-          <ion-col  size="7">
+          <ion-col  size="6">
             <ion-item>Shipping Fees</ion-item>
           </ion-col>
           <ion-col>
-            <ion-item>00 Frw</ion-item>
+            <ion-item>Free Shipping</ion-item>
           </ion-col>          
         </ion-row>
         <ion-row class="ion-align-items-center cell-class">
-          <ion-col  size="7">
+          <ion-col  size="6">
             <ion-item>Total </ion-item>
           </ion-col>
           <ion-col>
-            <ion-item></ion-item>
+            <ion-item>{{total() |currency:'Frw'}}</ion-item>
           </ion-col>          
         </ion-row>
         
@@ -126,6 +124,7 @@
       <ion-button expand="block" shape="round" color="primary" type="submit" [disabled]="!f.valid">
         
         <span style="text-transform:none!important;font-size:20px;">Confirm</span></ion-button> 
+        
       </form>     
     </ion-card-content>
   </ion-card>
