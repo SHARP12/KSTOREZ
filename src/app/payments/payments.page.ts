@@ -4,12 +4,10 @@ import { AlertController } from '@ionic/angular';
 import { DatePipe } from '@angular/common';
 import { LoadingController } from '@ionic/angular';
 import { Product,CartService } from '../services/cart.service';
+import { FirebaseService } from '../services/firebase.service';
 
 declare var window;
 
-//import { CartService, Product } from '../services/cart.service';
-
-//import * from  './assets/js/smtp.js';
 declare let Email : any;
 declare var makePayment: any;
 
@@ -20,7 +18,9 @@ declare var makePayment: any;
 })
 
 export class PaymentsPage implements OnInit {  
-  cart: Product[] = []; 
+  cart = this.cartService.getCart(); 
+  
+  
   //from the form  
   name :string; 
   town :string;
@@ -30,13 +30,15 @@ export class PaymentsPage implements OnInit {
   pay_method :string;
    
   //cart: Product[] = [];
-  constructor( private cartService: CartService,public alertController: AlertController) {
+  constructor( private cartService: CartService,public alertController: AlertController,private fbs:FirebaseService) {
    
    }
   ngOnInit() {  
     this.cart = this.cartService.getCart(); 
+    //adding order values to orders array
+   
   }
-  
+ 
   total():number{
     return window.home.getTotal();
   }
@@ -91,13 +93,38 @@ export class PaymentsPage implements OnInit {
 
    //checking the payment method chosen by the customer
     if(this.pay_method == "mobile Money / credit card"){
-      this.presentAlert("Order Received","Dear,"+ this.name, "We have received your order. we are now processing it.");
+      //this.presentAlert("Order Received","Dear,"+ this.name, "We have received your order. we are now processing it.");
+      //saving the order details in the database
+      this.fbs.createOrder( { 
+        amount:this.pay_amount,
+        cust_email: this.email,
+        cust_name: this.name,
+        cust_phone:this.phone,
+        products:"",
+        ref:"23436565",
+        ship_address:this.ship_address,
+        status:"unpaid"          
+      });
+      //email customer
+      this.orderEmail();
       //proceeding with payment
       makePayment(this.pay_amount,this.email,this.phone,this.name);
     } else{
+      //sending order email
       this.orderEmail();
+      //saving the order details in the database
+      this.fbs.createOrder( { 
+        amount:this.pay_amount,
+        cust_email: this.email,
+        cust_name: this.name,
+        cust_phone:this.phone,
+        products:"rice [x 2]",
+        ref:"23436565",
+        ship_address:this.ship_address,
+        status:"unpaid"          
+      });
       //sending an alert
-      this.presentAlert("Order Received","Dear,"+ this.name, "We have received your order. we are now processing it.");
+      //this.presentAlert("Order Received","Dear,"+ this.name, "We have received your order. we are now processing it.");
     }    
   }
   
