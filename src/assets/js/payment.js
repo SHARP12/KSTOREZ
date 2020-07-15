@@ -2,10 +2,10 @@ function myTest() {
     alert('Welcome to custom js');
 }
 
-function makePayment(amt,cust_email,cust_phone,cust_name) {
+function makePayment(ref,amt,cust_email,cust_phone,cust_name) {
     FlutterwaveCheckout({
       public_key: "FLWPUBK-e5f72bf99d21fbc69dbae898be07be54-X",
-      tx_ref: "hooli-tx-1920bbtyt",
+      tx_ref: ref,
       amount: amt,
       currency: "RWF",
       payment_options: "mobile_money_rwanda",

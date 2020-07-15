@@ -15,9 +15,18 @@
 
 <ion-content>
   <ion-item>
+    
     <ion-text> 
-      {{verify_payment()}}
+      
       <h1>{{payment_results}}</h1>
-    </ion-text>    
+    </ion-text> 
+    <ion-text>       
+      <h2>Please click on the finish button to complete the payment for order {{this.get_text_ref()}}.</h2>
+    </ion-text>   
   </ion-item>
+  
+    <ion-button expand="block" shape="round" color="primary" (click)="save_payment()">
+        
+      <span style="text-transform:none!important;font-size:20px;">Finish payment</span></ion-button>
+  
 </ion-content>
