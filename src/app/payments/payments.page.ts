@@ -19,8 +19,8 @@ declare var makePayment: any;
 
 export class PaymentsPage implements OnInit {  
   cart = this.cartService.getCart(); 
-  
-  
+  //refs for both orders and payments
+  order_ref = Math.floor(Date.now()/1000);   
   //from the form  
   name :string; 
   town :string;
@@ -43,8 +43,8 @@ export class PaymentsPage implements OnInit {
     return window.home.getTotal();
   }
   //payment amoiunt
-  pay_amount:number=this.total();
-
+  //pay_amount:number=this.total();
+  pay_amount:number= this.total();
   //getting today's date
   pipe = new DatePipe('en-RW');
   today:string = new Date().toDateString();
@@ -83,8 +83,8 @@ export class PaymentsPage implements OnInit {
   this.body_mail_order="<table><thead><tr style='background-color: maroon;color: white;'>"+
   "<th colspan='2'><h1><br>Thank you for your order</h1></th></tr></thead><tbody><tr>"+
    "<td colspan='2'><br>Hi <b>"+this.name+",</b> <br><br>Just to let you know — we've received "+
-   "your order <b>#9412</b> ,and it is now being processed:<br><br>Payment Method : <b>"+this.pay_method+".</b><br>"+
-   "<h2><b>[Order #9412] ("+this.today+")</b></h2></td></tr><tr><td><b>Products</b></td>"+
+   "your order <b>#"+this.order_ref+"</b> ,and it is now being processed:<br><br>Payment Method : <b>"+this.pay_method+".</b><br>"+
+   "<h2><b>[Order #"+this.order_ref+"] ("+this.today+")</b></h2></td></tr><tr><td><b>Products</b></td>"+
    "<td>Denim Jeans(3in1) - 32 [x 2] <br><br></td></tr> <b><br><tr><td><b>Amount</b></td>"+
    "<td>30,000 Frw <br><br></td></tr><tr><td><b>Shipping</b></td><td>Free Shipping <br><br></td>"+
    "</tr><tr><td><b>Total</b></td><td>30,000 Frw <br><br></td></tr><tr><td><b>Shipping Address</b></td>"+
@@ -101,14 +101,14 @@ export class PaymentsPage implements OnInit {
         cust_name: this.name,
         cust_phone:this.phone,
         products:"",
-        ref:"23436565",
+        ref:this.order_ref,
         ship_address:this.ship_address,
         status:"unpaid"          
       });
       //email customer
       this.orderEmail();
       //proceeding with payment
-      makePayment(this.pay_amount,this.email,this.phone,this.name);
+      makePayment(this.order_ref,this.pay_amount,this.email,this.phone,this.name);
     } else{
       //sending order email
       this.orderEmail();
@@ -119,7 +119,7 @@ export class PaymentsPage implements OnInit {
         cust_name: this.name,
         cust_phone:this.phone,
         products:"rice [x 2]",
-        ref:"23436565",
+        ref:this.order_ref,
         ship_address:this.ship_address,
         status:"unpaid"          
       });

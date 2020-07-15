@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {PaymentsPage} from 'src/app/payments/payments.page';
-
+import { FirebaseService } from 'src/app/services/firebase.service';
+import {Router} from'@angular/router';
+//declare let Email : any;
 @Component({
   selector: 'app-payment-confirm',
   templateUrl: './payment-confirm.page.html',
@@ -9,25 +10,43 @@ import {PaymentsPage} from 'src/app/payments/payments.page';
 export class PaymentConfirmPage  implements OnInit {
   payment_results : string;
   
-  //constructor() { }
+  constructor(private fbs:FirebaseService,public router:Router) { }  
+  
   //function that checks the payment status
   check_payment_status():string{    
     const url= new URL(window.location.href);
     const params = new URLSearchParams(url.search);
     return params.get('status');    
   }
-  //verifying the payment if the status is success full
-  
-  verify_payment(){
+  //function that returns the tx_ref
+   get_text_ref():string{
+    const url= new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    return params.get('tx_ref'); 
+   }
+   //function that returns the transaction_id
+   get_transaction_id():string{
+    const url= new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    return params.get('transaction_id');   
+   }
+   
+  //function that handles successful payment  
+   save_payment(){
     //if(this.check_payment_status()!= null){
     if(this.check_payment_status()=="successful"){
-      //verify payment on flutterwave
-
-     //save payment data in the database
-
-     //alert for successfull payment
-     this.payment_results="Payment successfull";
-
+      //saving payment details in the database
+      this.fbs.createPayment({
+        reference_number:this.get_text_ref(),
+        transaction_id:this.get_transaction_id()
+      });
+      //updating order status to paid      
+      this.fbs.updateOrder(
+        {status:"paid"},
+        this.get_text_ref()
+      );  
+      this.router.navigateByUrl('/tabs/tab1'); 
+     
     }else{
       //alert a failed payment
       this.payment_results = "Payment declined";
