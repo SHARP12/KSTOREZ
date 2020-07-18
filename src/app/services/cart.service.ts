@@ -1,31 +1,38 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
- 
+import { BehaviorSubject, Observable } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/firestore';
+
+//interface for the data to be fetched from items collection
 export interface Product {
   id: number;
-  name: string;
-  price: number;
-  amount: number;
-  imgUrl: string;
+  ProductName: string;
+  Price: number;
+  Amount: number;
+  Description: string;
+  imageUrl: string;
 }
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  data: Product[] = [
-    { id: 0, name: 'Shoes', price: 20000, amount: 0 ,imgUrl:'https://scene7.zumiez.com/is/image/zumiez/pdp_hero/Champion-Men-s-Rally-Pro-Black-%26-White-Shoes-_298256.jpg'},
-    { id: 1, name: 'Mattress', price: 50000, amount: 0,imgUrl:'https://www.woodenstreet.com/image/cache/data/mattress/updated/ortho-memory-mattress/updated/king/8-inch/1st-680x400.jpg' },
-    { id: 2, name: 'Jean', price: 5000, amount: 0,imgUrl:'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTlc6x-4Zg_0_OH_CjbpRpSEnbItRGVibV0ow&usqp=CAU' },    
-  ];
+  items: Observable<any[]>;
+ 
+  
  
   private cart = [];
   private cartItemCount = new BehaviorSubject(0);
- 
-  constructor() {}
- 
-  getProducts() {
-    return this.data;
+  
+  constructor(private firestore: AngularFirestore) {
+    this.items = firestore.collection('items').valueChanges();
+    
   }
+
+  //Method to retrieve from firebase.
+  retrieve_products(): Observable<Product[]>{ 
+   return this.items; 
+  }
+  
+ 
  
   getCart() {
     return this.cart;
@@ -39,13 +46,13 @@ export class CartService {
     let added = false;
     for (let p of this.cart) {
       if (p.id === product.id) {
-        p.amount += 1;
+        p.Amount += 1;
         added = true;
         break;
       }
     }
     if (!added) {
-      product.amount = 1;
+      product.Amount = 1;
       this.cart.push(product);
     }
     this.cartItemCount.next(this.cartItemCount.value + 1);
@@ -54,8 +61,8 @@ export class CartService {
   decreaseProduct(product) {
     for (let [index, p] of this.cart.entries()) {
       if (p.id === product.id) {
-        p.amount -= 1;
-        if (p.amount == 0) {
+        p.Amount -= 1;
+        if (p.Amount == 0) {
           this.cart.splice(index, 1);
         }
       }
@@ -66,9 +73,15 @@ export class CartService {
   removeProduct(product) {
     for (let [index, p] of this.cart.entries()) {
       if (p.id === product.id) {
-        this.cartItemCount.next(this.cartItemCount.value - p.amount);
+        this.cartItemCount.next(this.cartItemCount.value - p.Amount);
         this.cart.splice(index, 1);
       }
     }
   }
+
+//function to get cart total
+getTotal() {
+  return this.cart.reduce((i, j) => i + j.Price * j.Amount, 0);
+}
+
 }

@@ -39,7 +39,9 @@
                 "input": "src/global.scss"
               }
             ],
-            "scripts": []
+            "scripts": [
+              "./src/assets/js/payment.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -99,7 +101,9 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "styles": [],
-            "scripts": [],
+            "scripts": [
+              "src/assets/js/custom.js"
+            ],
             "assets": [
               {
                 "glob": "favicon.ico",
@@ -128,7 +132,9 @@
               "tsconfig.spec.json",
               "e2e/tsconfig.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         },
         "e2e": {
@@ -174,7 +180,8 @@
     }
   },
   "cli": {
-    "defaultCollection": "@ionic/angular-toolkit"
+    "defaultCollection": "@ionic/angular-toolkit",
+    "analytics": "64fa4c4d-4a4a-454d-b20c-12e6317c74bb"
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {

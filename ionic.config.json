@@ -1,5 +1,9 @@
 {
   "name": "KSTOREZ-APP",
-  "integrations": {},
-  "type": "angular"
+  "integrations": {
+    "cordova": {},
+    "capacitor": {}
+  },
+  "type": "angular",
+  "id": "9576fd6c"
 }
