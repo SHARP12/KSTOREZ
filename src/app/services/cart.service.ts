@@ -23,16 +23,14 @@ export class CartService {
   private cartItemCount = new BehaviorSubject(0);
   
   constructor(private firestore: AngularFirestore) {
-    this.items = firestore.collection('items').valueChanges();
+    //this.items = firestore.collection('items').valueChanges();
     
   }
 
   //Method to retrieve from firebase.
-  retrieve_products(): Observable<Product[]>{ 
-   return this.items; 
-  }
-  
- 
+  //retrieve_products(): Observable<Product[]>{ 
+  // return this.items; 
+  //}
  
   getCart() {
     return this.cart;
@@ -83,5 +81,9 @@ export class CartService {
 getTotal() {
   return this.cart.reduce((i, j) => i + j.Price * j.Amount, 0);
 }
+
+
+
+
 
 }

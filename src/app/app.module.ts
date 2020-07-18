@@ -16,6 +16,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { FirebaseService } from 'src/app/services/firebase.service';
 //image picker
 //import { ImagePicker } from '@ionic-native/image-picker';
 //import { Crop } from '@ionic-native/crop';
@@ -33,6 +34,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
     AngularFirestoreModule
   ],
   providers: [
+    FirebaseService,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

@@ -39,7 +39,7 @@
         </ion-avatar><br>
         <ion-label>Men's Shirts</ion-label>
       </ion-col>
-           
+               
     </ion-row>
     </ion-grid>
 
@@ -77,7 +77,13 @@
                   <b>{{ item.Price | currency:'RF'}}</b>
                   <p>{{item.Description}}</p>
                 </ion-label>
-              </ion-col>             
+              </ion-col> 
+              <ion-col>
+                <button >            
+                  More info
+                  <ion-icon name="arrow-forward" item-right color="primary"></ion-icon>
+                </button>
+              </ion-col>            
             </ion-row>
 
           </ion-card-content>

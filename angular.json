@@ -39,9 +39,7 @@
                 "input": "src/global.scss"
               }
             ],
-            "scripts": [
-              "./src/assets/js/payment.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -101,9 +99,7 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "styles": [],
-            "scripts": [
-              "src/assets/js/custom.js"
-            ],
+            "scripts": [],
             "assets": [
               {
                 "glob": "favicon.ico",

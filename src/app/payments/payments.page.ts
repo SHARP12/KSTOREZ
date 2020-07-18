@@ -2,8 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm ,FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { DatePipe } from '@angular/common';
+import { LoadingController } from '@ionic/angular';
+import { Product,CartService } from '../services/cart.service';
+import { FirebaseService } from '../services/firebase.service';
 
-//import * from  './assets/js/smtp.js';
+declare var window;
+
 declare let Email : any;
 declare var makePayment: any;
 
@@ -13,30 +17,45 @@ declare var makePayment: any;
   styleUrls: ['./payments.page.scss'],
 })
 
-export class PaymentsPage implements OnInit { 
+export class PaymentsPage implements OnInit {  
+  cart = this.cartService.getCart(); 
   
-  foo:string;
-  //from the form
-  amount:number=100;
+  
+  //from the form  
   name :string; 
   town :string;
   phone :string;
   email:string;
   ship_address:string;
   pay_method :string;
-  
+   
+  //cart: Product[] = [];
+  constructor( private cartService: CartService,public alertController: AlertController,private fbs:FirebaseService) {
+   
+   }
+  ngOnInit() {  
+    this.cart = this.cartService.getCart(); 
+    //adding order values to orders array
+   
+  }
+ 
+//creating the product list containing the name and the number 
+//of items
+ProductList = [];
+
+
+
+  total():number{
+    return window.home.getTotal();
+  }
+  //payment amoiunt
+  pay_amount:number=this.total();
+
   //getting today's date
   pipe = new DatePipe('en-RW');
   today:string = new Date().toDateString();
-  //mySimpleFormat = this.pipe.transform(this.now, 'dd/MM/YYYY');
-  //today = this.pipe.transform(this.now, 'short');
     //for email
-  body_mail_order:string;  
-  
-  constructor(public alertController: AlertController) { }
-    
-    ngOnInit() {    
-    }
+  body_mail_order:string;    
     //function for alert
     async presentAlert(noti_header:string,noti_subheader:string,noti_message:string){
       const alert = await this.alertController.create({
@@ -46,7 +65,7 @@ export class PaymentsPage implements OnInit {
         message: noti_message,
         buttons: ['OK']
       });  
-      await alert.present();
+       alert.present();
     }
     //general function for sending emails
     email_customer(receiver_email:string,subject:string, body:string){
@@ -63,7 +82,7 @@ export class PaymentsPage implements OnInit {
     //function for sending order email
     orderEmail(){                
       this.email_customer(this.email,'Your Order',this.body_mail_order);
-    }
+    }    
     //function that manages payment and orders
   pay() { 
     //the body of order email    
@@ -76,29 +95,46 @@ export class PaymentsPage implements OnInit {
    "<td>30,000 Frw <br><br></td></tr><tr><td><b>Shipping</b></td><td>Free Shipping <br><br></td>"+
    "</tr><tr><td><b>Total</b></td><td>30,000 Frw <br><br></td></tr><tr><td><b>Shipping Address</b></td>"+
    "<td>"+this.ship_address+" <br><br></td></tr></tbody><tfoot><tr><th colspan='2'>Thank you for shopping with"+
-   "<a href='https://kstorez.com'>Kstorez</a></th></tr></tfoot></table>";
+   "<a href='https://kstorez.com'>Kstorez</a></th></tr></tfoot></table>";   
+
    //checking the payment method chosen by the customer
     if(this.pay_method == "mobile Money / credit card"){
-      makePayment(this.amount,this.email,this.phone,this.name);
-    } else{
+      //this.presentAlert("Order Received","Dear,"+ this.name, "We have received your order. we are now processing it.");
+      //saving the order details in the database
+      this.fbs.createOrder( { 
+        amount:this.pay_amount,
+        cust_email: this.email,
+        cust_name: this.name,
+        cust_phone:this.phone,
+        products: this.cartService.getCart(),
+        ref:"23436565",
+        ship_address:this.ship_address,
+        status:"unpaid"          
+      });
+      //email customer
       this.orderEmail();
+      //proceeding with payment
+      makePayment(this.pay_amount,this.email,this.phone,this.name);
+    } else{
+      //sending order email
+      this.orderEmail();
+      //saving the order details in the database
+      this.fbs.createOrder( { 
+        amount:this.pay_amount,
+        cust_email: this.email,
+        cust_name: this.name,
+        cust_phone:this.phone,
+        products:"rice [x 2]",
+        ref:"23436565",
+        ship_address:this.ship_address,
+        status:"unpaid"          
+      });
       //sending an alert
-      this.presentAlert("Order Received","Dear,"+ this.name, "We have received your order. we are now processing it.");
+      //this.presentAlert("Order Received","Dear,"+ this.name, "We have received your order. we are now processing it.");
     }    
   }
-  check_url(){
-    //const url = new URL('https://example.com?foo=1&bar=2');
-    const url= new URL(window.location.href);
-    const params = new URLSearchParams(url.search);
-    params.append('status','successful')
-    this.foo =params.get('status');
-
-    alert(this.foo);
-  }
-  sendSms(){    
-      
-    
-  }
   
-  
+  sendSms(){ 
+      }
+        
 }
